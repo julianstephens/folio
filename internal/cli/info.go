@@ -1,10 +1,7 @@
 package cli
 
 import (
-	"errors"
 	"fmt"
-
-	pdftype "github.com/pdfcpu/pdfcpu/pkg/pdfcpu/types"
 
 	"github.com/julianstephens/folio/internal/pdf"
 )
@@ -28,26 +25,21 @@ func (c *Info) Run() error {
 		return err
 	}
 
-	var dim *pdftype.Dim
-	for d := range info.PageDimensions {
-		if d.Height > 0 && d.Width > 0 {
-			dim = &d
-			break
-		}
-	}
-	if dim == nil {
-		return errors.New("could not determine page dimensions")
+	if len(info.PageBoundaries) != info.PageCount {
+		return fmt.Errorf("page boundaries count (%d) does not match page count (%d)", len(info.PageBoundaries), info.PageCount)
 	}
 
-	fmt.Println("PDF Information:")
-	fmt.Printf("Source: %s\n", c.File)
-	fmt.Printf("Page Count: %d\n", info.PageCount)
-	fmt.Printf("Page Size: %.2fx%.2f\n", dim.Width, dim.Height)
-	orientation := "Portrait"
-	if dim.Landscape() {
-		orientation = "Landscape"
+	firstPageBoundaries := info.PageBoundaries[0]
+
+	box, err := pdf.ExtractPageBox(firstPageBoundaries)
+	if err != nil {
+		return err
 	}
-	fmt.Printf("Orientation: %s\n", orientation)
+
+	fmt.Printf("File: %s\n", c.File)
+	fmt.Printf("Pages: %d\n", info.PageCount)
+	fmt.Printf("Page size: %.0f x %.0f pt (%s)\n", box.Width, box.Height, box.Size)
+	fmt.Printf("Orientation: %s\n", box.Orientation)
 
 	return nil
 }
