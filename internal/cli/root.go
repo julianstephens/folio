@@ -14,6 +14,14 @@ type OutputFileArg struct {
 	File string `arg:"" name:"output" help:"Output PDF file." type:"path"`
 }
 
+type SheetSizeArg struct {
+	SheetSize string `arg:"" name:"sheet-size" help:"Sheet size (e.g., letter, a4)." optional:""`
+}
+
+type PadArg struct {
+	Pad string `arg:"" name:"pad" help:"Page padding mode (auto, none). Auto pads to multiple of 4." enum:"auto,none" default:"auto"`
+}
+
 type CLI struct {
 	Globals
 	Info    Info    `cmd:"" help:"Show information about a PDF file."`

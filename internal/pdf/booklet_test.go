@@ -15,10 +15,11 @@ func TestCreateBooklet_4Pages(t *testing.T) {
 	outputPath := filepath.Join(t.TempDir(), "booklet_4p.pdf")
 
 	opts := pdf.BookletOptions{
-		SheetSize:   "",
+		WriteOptions: pdf.WriteOptions{
+			SheetSize: "",
+			Pad:       "auto",
+		},
 		BindingEdge: "long",
-		Duplex:      "long",
-		Pad:         "auto",
 	}
 
 	err := pdf.CreateBooklet(inputPath, outputPath, opts)
@@ -52,10 +53,11 @@ func TestCreateBooklet_8Pages(t *testing.T) {
 	outputPath := filepath.Join(t.TempDir(), "booklet_8p.pdf")
 
 	opts := pdf.BookletOptions{
-		SheetSize:   "",
+		WriteOptions: pdf.WriteOptions{
+			SheetSize: "",
+			Pad:       "auto",
+		},
 		BindingEdge: "long",
-		Duplex:      "long",
-		Pad:         "auto",
 	}
 
 	err := pdf.CreateBooklet(inputPath, outputPath, opts)
@@ -84,10 +86,11 @@ func TestCreateBooklet_5Pages_AutoPad(t *testing.T) {
 	outputPath := filepath.Join(t.TempDir(), "booklet_5p_autopad.pdf")
 
 	opts := pdf.BookletOptions{
-		SheetSize:   "",
+		WriteOptions: pdf.WriteOptions{
+			SheetSize: "",
+			Pad:       "auto",
+		},
 		BindingEdge: "long",
-		Duplex:      "long",
-		Pad:         "auto",
 	}
 
 	err := pdf.CreateBooklet(inputPath, outputPath, opts)
@@ -116,10 +119,11 @@ func TestCreateBooklet_5Pages_NoPad(t *testing.T) {
 	outputPath := filepath.Join(t.TempDir(), "booklet_5p_nopad.pdf")
 
 	opts := pdf.BookletOptions{
-		SheetSize:   "",
+		WriteOptions: pdf.WriteOptions{
+			SheetSize: "",
+			Pad:       "none",
+		},
 		BindingEdge: "long",
-		Duplex:      "long",
-		Pad:         "none",
 	}
 
 	err := pdf.CreateBooklet(inputPath, outputPath, opts)
@@ -137,10 +141,11 @@ func TestCreateBooklet_A4(t *testing.T) {
 	outputPath := filepath.Join(t.TempDir(), "booklet_4p_a4.pdf")
 
 	opts := pdf.BookletOptions{
-		SheetSize:   "",
+		WriteOptions: pdf.WriteOptions{
+			SheetSize: "",
+			Pad:       "auto",
+		},
 		BindingEdge: "long",
-		Duplex:      "long",
-		Pad:         "auto",
 	}
 
 	err := pdf.CreateBooklet(inputPath, outputPath, opts)
@@ -178,10 +183,11 @@ func TestCreateBooklet_ShortEdgeBinding(t *testing.T) {
 	outputPath := filepath.Join(t.TempDir(), "booklet_short_edge.pdf")
 
 	opts := pdf.BookletOptions{
-		SheetSize:   "",
+		WriteOptions: pdf.WriteOptions{
+			SheetSize: "",
+			Pad:       "auto",
+		},
 		BindingEdge: "short",
-		Duplex:      "long",
-		Pad:         "auto",
 	}
 
 	err := pdf.CreateBooklet(inputPath, outputPath, opts)
@@ -200,10 +206,11 @@ func TestCreateBooklet_ExplicitSheetSize(t *testing.T) {
 	outputPath := filepath.Join(t.TempDir(), "booklet_explicit_size.pdf")
 
 	opts := pdf.BookletOptions{
-		SheetSize:   "letter",
+		WriteOptions: pdf.WriteOptions{
+			SheetSize: "letter",
+			Pad:       "auto",
+		},
 		BindingEdge: "long",
-		Duplex:      "long",
-		Pad:         "auto",
 	}
 
 	err := pdf.CreateBooklet(inputPath, outputPath, opts)
@@ -237,10 +244,11 @@ func TestCreateBooklet_MixedSizes(t *testing.T) {
 	outputPath := filepath.Join(t.TempDir(), "booklet_mixed.pdf")
 
 	opts := pdf.BookletOptions{
-		SheetSize:   "",
+		WriteOptions: pdf.WriteOptions{
+			SheetSize: "",
+			Pad:       "auto",
+		},
 		BindingEdge: "long",
-		Duplex:      "long",
-		Pad:         "auto",
 	}
 
 	err := pdf.CreateBooklet(inputPath, outputPath, opts)
@@ -258,10 +266,11 @@ func TestCreateBooklet_NonWritableOutput(t *testing.T) {
 	outputPath := "/nonexistent/directory/booklet.pdf"
 
 	opts := pdf.BookletOptions{
-		SheetSize:   "",
+		WriteOptions: pdf.WriteOptions{
+			SheetSize: "",
+			Pad:       "auto",
+		},
 		BindingEdge: "long",
-		Duplex:      "long",
-		Pad:         "auto",
 	}
 
 	err := pdf.CreateBooklet(inputPath, outputPath, opts)
@@ -274,15 +283,16 @@ func TestCreateBooklet_NonWritableOutput(t *testing.T) {
 	}
 }
 
-func TestCreateBooklet_InvalidInput(t *testing.T) {
+func TestCreateBooklet_EmptyPDF(t *testing.T) {
 	inputPath := filepath.Join(testhelpers.TESTDATA_DIR, "empty.pdf")
 	outputPath := filepath.Join(t.TempDir(), "booklet_invalid.pdf")
 
 	opts := pdf.BookletOptions{
-		SheetSize:   "",
+		WriteOptions: pdf.WriteOptions{
+			SheetSize: "",
+			Pad:       "auto",
+		},
 		BindingEdge: "long",
-		Duplex:      "long",
-		Pad:         "auto",
 	}
 
 	err := pdf.CreateBooklet(inputPath, outputPath, opts)
@@ -292,5 +302,33 @@ func TestCreateBooklet_InvalidInput(t *testing.T) {
 
 	if !errors.Is(err, pdf.ErrInvalidPDF) {
 		t.Errorf("Expected ErrInvalidPDF, got: %v", err)
+	}
+}
+
+func TestCreateBooklet_CustomSize_ExplicitSheetSize(t *testing.T) {
+	inputPath := filepath.Join(testhelpers.TESTDATA_DIR, "Booklet_organized.pdf")
+	outputPath := filepath.Join(t.TempDir(), "booklet_custom.pdf")
+
+	// Check if file exists first
+	if _, err := os.Stat(inputPath); os.IsNotExist(err) {
+		t.Skip("Booklet_organized.pdf not found")
+	}
+
+	opts := pdf.BookletOptions{
+		WriteOptions: pdf.WriteOptions{
+			SheetSize: "letter",
+			Pad:       "auto",
+		},
+		BindingEdge: "long",
+	}
+
+	err := pdf.CreateBooklet(inputPath, outputPath, opts)
+	if err != nil {
+		t.Fatalf("CreateBooklet() with custom size and explicit sheet size failed: %v", err)
+	}
+
+	// Verify output exists
+	if _, err := os.Stat(outputPath); os.IsNotExist(err) {
+		t.Fatalf("Output file was not created")
 	}
 }
