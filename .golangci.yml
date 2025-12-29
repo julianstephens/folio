@@ -10,7 +10,6 @@ linters:
     - staticcheck # high-signal static analysis
     - gosimple # simplify overcomplicated code
     - ineffassign # detect unused assignments
-    - gofmt # ensure gofmt has been run
     - goimports # import formatting/cleanup
 
 issues:

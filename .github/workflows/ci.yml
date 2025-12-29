@@ -8,7 +8,7 @@ on:
 
 jobs:
   vet:
-    name: Go test and vet
+    name: Go vet
     runs-on: ubuntu-latest
 
     steps:
