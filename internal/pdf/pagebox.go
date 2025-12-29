@@ -55,11 +55,17 @@ func approxEqual(a, b, tol float64) bool {
 
 // DetectKnownSize checks if the given width and height correspond to a known size.
 func DetectKnownSize(width, height float64) KnownSize {
+	// normalize to portrait for comparison
+	w, h := width, height
+	if w > h {
+		w, h = h, w
+	}
+
 	switch {
-	case approxEqual(width, LetterWidth, tolerance) && approxEqual(height, LetterHeight, tolerance):
+	case approxEqual(w, LetterWidth, tolerance) && approxEqual(h, LetterHeight, tolerance):
 		return KnownSize_.Letter
 
-	case approxEqual(width, A4Width, tolerance) && approxEqual(height, A4Height, tolerance):
+	case approxEqual(w, A4Width, tolerance) && approxEqual(h, A4Height, tolerance):
 		return KnownSize_.A4
 
 	default:

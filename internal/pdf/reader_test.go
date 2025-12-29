@@ -146,3 +146,30 @@ func TestGetPDFInfo(t *testing.T) {
 		})
 	}
 }
+
+func TestExtractPageBox(t *testing.T) {
+	for _, fname := range testhelpers.VALID_PDFS {
+		t.Run("page box: "+fname, func(t *testing.T) {
+			filePath := filepath.Join(testhelpers.TESTDATA_DIR, fname)
+			reader, err := pdf.GetPDFReader(filePath)
+			if err != nil {
+				t.Fatalf("GetPDFReader(%q) returned error: %v", filePath, err)
+			}
+			info, err := pdf.GetPDFInfo(reader, filePath)
+			if err != nil {
+				t.Fatalf("GetPDFInfo(%q) returned error: %v", filePath, err)
+			}
+			if len(info.PageBoundaries) == 0 {
+				t.Fatalf("GetPDFInfo(%q) returned no PageBoundaries", filePath)
+			}
+			firstPageBoundaries := info.PageBoundaries[0]
+			box, err := pdf.ExtractPageBox(firstPageBoundaries)
+			if err != nil {
+				t.Fatalf("ExtractPageBox(%q) returned error: %v", filePath, err)
+			}
+			if box.Width <= 0 || box.Height <= 0 {
+				t.Errorf("ExtractPageBox(%q) returned invalid dimensions: width=%.2f, height=%.2f", filePath, box.Width, box.Height)
+			}
+		})
+	}
+}

@@ -13,7 +13,9 @@ func TestDetectKnownSize(t *testing.T) {
 		expected pdf.KnownSize
 	}{
 		{612, 792, pdf.KnownSize_.Letter}, // 8.5 x 11 in
+		{792, 612, pdf.KnownSize_.Letter}, // Landscape Letter
 		{595, 842, pdf.KnownSize_.A4},     // 210 x 297 mm
+		{842, 595, pdf.KnownSize_.A4},     // Landscape A4
 		{0, 0, pdf.KnownSize_.Custom},     // Invalid size
 		{500, 700, pdf.KnownSize_.Custom}, // Non-standard size
 	}
@@ -26,7 +28,7 @@ func TestDetectKnownSize(t *testing.T) {
 	}
 }
 
-func TestDetermineOrientation(t *testing.T) {
+func TestDetectOrientation(t *testing.T) {
 	tests := []struct {
 		widthPt  float64
 		heightPt float64
@@ -40,7 +42,7 @@ func TestDetermineOrientation(t *testing.T) {
 	for _, tt := range tests {
 		orientation := pdf.DetectOrientation(tt.widthPt, tt.heightPt)
 		if orientation != tt.expected {
-			t.Errorf("DetermineOrientation(%f, %f) = %q; want %q", tt.widthPt, tt.heightPt, orientation, tt.expected)
+			t.Errorf("DetectOrientation(%f, %f) = %q; want %q", tt.widthPt, tt.heightPt, orientation, tt.expected)
 		}
 	}
 }
