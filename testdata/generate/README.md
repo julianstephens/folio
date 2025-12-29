@@ -43,4 +43,6 @@ make invalid # empty, truncated, not-a-pdf
 
 ### Optional
 
+Included in `testdata/pdf`. Manually regenerate if necessary. 
+
 - `encrypted.pdf` (requires qpdf)
