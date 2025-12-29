@@ -94,7 +94,7 @@ func CreateBooklet(inputPath, outputPath string, opts BookletOptions) error {
 
 	err = pdfapi.BookletFile([]string{inputPath}, outputPath, nil, nup, conf)
 	if err != nil {
-		return utils.WrapErr("failed to create booklet", ErrInvalidPDF, err)
+		return utils.NewErr("failed to create booklet", err)
 	}
 
 	return nil
