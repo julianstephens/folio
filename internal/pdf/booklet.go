@@ -14,10 +14,10 @@ import (
 )
 
 var (
-	ErrMixedPageSizes      = errors.New("mixed page sizes")
-	ErrCannotInferSize     = errors.New("cannot infer sheet size")
-	ErrInvalidPageCount    = errors.New("invalid page count")
-	ErrOutputNotWritable   = errors.New("output path not writable")
+	ErrMixedPageSizes    = errors.New("mixed page sizes")
+	ErrCannotInferSize   = errors.New("cannot infer sheet size")
+	ErrInvalidPageCount  = errors.New("invalid page count")
+	ErrOutputNotWritable = errors.New("output path not writable")
 )
 
 // BookletOptions contains configuration for booklet creation.
@@ -100,7 +100,7 @@ func CreateBooklet(inputPath, outputPath string, opts BookletOptions) error {
 // validateOutputPath checks if the output path is writable.
 func validateOutputPath(outputPath string) error {
 	dir := filepath.Dir(outputPath)
-	
+
 	// Check if directory exists
 	info, err := os.Stat(dir)
 	if err != nil {
@@ -109,7 +109,7 @@ func validateOutputPath(outputPath string) error {
 		}
 		return utils.WrapErr(fmt.Sprintf("cannot access output directory %q", dir), ErrOutputNotWritable, err)
 	}
-	
+
 	if !info.IsDir() {
 		return utils.NewErr(fmt.Sprintf("output directory %q is not a directory", dir), ErrOutputNotWritable)
 	}
@@ -142,29 +142,29 @@ func determineSheetSize(requestedSize string, inputBox *PageBox) (string, error)
 		sheetWidth, sheetHeight := getSheetDimensions(requestedSize)
 		expectedWidth := sheetWidth / 2
 		expectedHeight := sheetHeight
-		
+
 		// Check if input is portrait half-sheet
 		if inputBox.Orientation == Orientations.Portrait &&
 			approxEqual(inputBox.Width, expectedWidth, tolerance*2) &&
 			approxEqual(inputBox.Height, expectedHeight, tolerance*2) {
 			return requestedSize, nil
 		}
-		
-		// Check if input is landscape half-sheet  
+
+		// Check if input is landscape half-sheet
 		if inputBox.Orientation == Orientations.Landscape &&
 			approxEqual(inputBox.Width, expectedHeight, tolerance*2) &&
 			approxEqual(inputBox.Height, expectedWidth, tolerance*2) {
 			return requestedSize, nil
 		}
-		
+
 		// Input matches the full sheet size, which is valid for booklet
-		if (approxEqual(inputBox.Width, sheetWidth, tolerance*2) && 
+		if (approxEqual(inputBox.Width, sheetWidth, tolerance*2) &&
 			approxEqual(inputBox.Height, sheetHeight, tolerance*2)) ||
-		   (approxEqual(inputBox.Width, sheetHeight, tolerance*2) && 
-			approxEqual(inputBox.Height, sheetWidth, tolerance*2)) {
+			(approxEqual(inputBox.Width, sheetHeight, tolerance*2) &&
+				approxEqual(inputBox.Height, sheetWidth, tolerance*2)) {
 			return requestedSize, nil
 		}
-		
+
 		// Allow if it's a known size that could work
 		if inputBox.Size == KnownSizes.Letter && requestedSize == "letter" {
 			return requestedSize, nil
@@ -184,7 +184,7 @@ func determineSheetSize(requestedSize string, inputBox *PageBox) (string, error)
 
 	// Cannot infer
 	return "", utils.NewErr(
-		fmt.Sprintf("cannot infer sheet size from input page size (%.0fx%.0f pt), please specify --sheet-size", 
+		fmt.Sprintf("cannot infer sheet size from input page size (%.0fx%.0f pt), please specify --sheet-size",
 			inputBox.Width, inputBox.Height),
 		ErrCannotInferSize,
 	)
