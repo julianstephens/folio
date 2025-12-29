@@ -33,8 +33,8 @@ type BookletOptions struct {
 //   - If opts.Pad == "none" and the input page count is not a multiple of 4,
 //     CreateBooklet returns ErrInvalidPageCount without modifying the file.
 //   - For any other value (including "auto"), the underlying pdfcpu library
-//     automatically pads the document as needed (for example, by inserting
-//     blank pages) so that the page count is suitable for booklet imposition.
+//     automatically pads the document as needed, for example by inserting
+//     blank pages, so that the page count is suitable for booklet imposition.
 func CreateBooklet(inputPath, outputPath string, opts BookletOptions) error {
 	// Validate output path is writable
 	if err := validateOutputPath(outputPath); err != nil {
@@ -125,9 +125,14 @@ func validateOutputPath(outputPath string) error {
 	if err != nil {
 		return utils.NewErr(fmt.Sprintf("output directory %q is not writable", dir), ErrOutputNotWritable)
 	}
-	defer f.Close()
-	defer os.Remove(testFile)
 
+	if err := f.Close(); err != nil {
+		return utils.WrapErr(fmt.Sprintf("failed to close test file in output directory %q", dir), ErrOutputNotWritable, err)
+	}
+
+	if err := os.Remove(testFile); err != nil {
+		return utils.WrapErr(fmt.Sprintf("output directory %q is not writable", dir), ErrOutputNotWritable, err)
+	}
 	return nil
 }
 
