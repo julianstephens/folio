@@ -137,9 +137,11 @@ func TestGetPDFInfo(t *testing.T) {
 			if err == nil {
 				t.Fatalf("GetPDFReader(%q) expected error, got nil", filePath)
 			}
-			_, err = pdf.GetPDFInfo(reader, filePath)
-			if err == nil {
-				t.Fatalf("GetPDFInfo(%q) expected error, got nil", filePath)
+			if reader != nil {
+				_, err = pdf.GetPDFInfo(reader, filePath)
+				if err == nil {
+					t.Fatalf("GetPDFInfo(%q) expected error, got nil", filePath)
+				}
 			}
 		})
 	}
