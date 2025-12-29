@@ -1,7 +1,6 @@
 package cli
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/julianstephens/folio/internal/pdf"
@@ -27,7 +26,7 @@ func (c *Info) Run() error {
 	}
 
 	if len(info.PageBoundaries) != info.PageCount {
-		return errors.New("page boundaries count does not match page count")
+		return fmt.Errorf("page boundaries count (%d) does not match page count (%d)", len(info.PageBoundaries), info.PageCount)
 	}
 
 	firstPageBoundaries := info.PageBoundaries[0]
@@ -39,7 +38,7 @@ func (c *Info) Run() error {
 
 	fmt.Printf("File: %s\n", c.File)
 	fmt.Printf("Pages: %d\n", info.PageCount)
-	fmt.Printf("Page size: %.0f x %.0f pt (%s) \n", box.Width, box.Height, box.Size)
+	fmt.Printf("Page size: %.0f x %.0f pt (%s)\n", box.Width, box.Height, box.Size)
 	fmt.Printf("Orientation: %s\n", box.Orientation)
 
 	return nil

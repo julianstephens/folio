@@ -2,16 +2,19 @@ package pdf
 
 import "math"
 
+// Tolerance in points for size detection
 const tolerance = 2
 
+// Standard page sizes in points (1 point = 1/72 inch)
 const LetterWidth = 612
 const LetterHeight = 792
 const A4Width = 595
 const A4Height = 842
 
+// Orientation indicates whether the page is in portrait or landscape mode.
 type Orientation string
 
-var Orientation_ = struct {
+var Orientations = struct {
 	Landscape Orientation
 	Portrait  Orientation
 }{
@@ -19,9 +22,10 @@ var Orientation_ = struct {
 	Portrait:  "portrait",
 }
 
+// KnownSize represents standard paper sizes.
 type KnownSize string
 
-var KnownSize_ = struct {
+var KnownSizes = struct {
 	Letter KnownSize
 	A4     KnownSize
 	Custom KnownSize
@@ -31,17 +35,19 @@ var KnownSize_ = struct {
 	Custom: "Custom",
 }
 
+// Dimensions returns the width and height in points for the KnownSize.
 func (ks KnownSize) Dimensions() (width, height float64) {
 	switch ks {
-	case KnownSize_.Letter:
+	case KnownSizes.Letter:
 		return LetterWidth, LetterHeight
-	case KnownSize_.A4:
+	case KnownSizes.A4:
 		return A4Width, A4Height
 	default:
 		return 0, 0
 	}
 }
 
+// PageBox holds information about a PDF page's dimensions and size.
 type PageBox struct {
 	Width       float64
 	Height      float64
@@ -63,20 +69,20 @@ func DetectKnownSize(width, height float64) KnownSize {
 
 	switch {
 	case approxEqual(w, LetterWidth, tolerance) && approxEqual(h, LetterHeight, tolerance):
-		return KnownSize_.Letter
+		return KnownSizes.Letter
 
 	case approxEqual(w, A4Width, tolerance) && approxEqual(h, A4Height, tolerance):
-		return KnownSize_.A4
+		return KnownSizes.A4
 
 	default:
-		return KnownSize_.Custom
+		return KnownSizes.Custom
 	}
 }
 
 // DetectOrientation determines the orientation based on width and height.
 func DetectOrientation(width, height float64) Orientation {
 	if width > height {
-		return Orientation_.Landscape
+		return Orientations.Landscape
 	}
-	return Orientation_.Portrait
+	return Orientations.Portrait
 }

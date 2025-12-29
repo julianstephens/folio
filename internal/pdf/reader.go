@@ -238,6 +238,7 @@ func GetPDFInfo(reader io.ReadSeeker, filePath string) (info *pdfcpu.PDFInfo, er
 	return
 }
 
+// ExtractPageBox extracts the PageBox information from the given PageBoundaries.
 func ExtractPageBox(pageBoundary pdfmodel.PageBoundaries) (*PageBox, error) {
 	mediaBox := pageBoundary.MediaBox()
 	if mediaBox == nil {
