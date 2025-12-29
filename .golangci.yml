@@ -1,0 +1,18 @@
+version: "2"
+
+run:
+  timeout: 3m
+  tests: true
+
+linters:
+  enable:
+    - govet # built-in: suspicious constructs
+    - staticcheck # high-signal static analysis
+    - gosimple # simplify overcomplicated code
+    - ineffassign # detect unused assignments
+    - gofmt # ensure gofmt has been run
+    - goimports # import formatting/cleanup
+
+issues:
+  max-same-issues: 5
+  max-issues-per-linter: 20
