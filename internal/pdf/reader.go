@@ -17,7 +17,7 @@ import (
 
 var (
 	config *pdfmodel.Configuration
-	once   *sync.Once
+	once   sync.Once
 )
 
 /* IsPDFFile checks if the file at filePath is a valid, non-empty PDF file. */
