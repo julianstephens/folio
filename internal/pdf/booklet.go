@@ -125,9 +125,14 @@ func validateOutputPath(outputPath string) error {
 	if err != nil {
 		return utils.NewErr(fmt.Sprintf("output directory %q is not writable", dir), ErrOutputNotWritable)
 	}
-	defer f.Close()
-	defer os.Remove(testFile)
 
+	if err := f.Close(); err != nil {
+		return utils.WrapErr(fmt.Sprintf("failed to close test file in output directory %q", dir), ErrOutputNotWritable, err)
+	}
+
+	if err := os.Remove(testFile); err != nil {
+		return utils.WrapErr(fmt.Sprintf("output directory %q is not writable", dir), ErrOutputNotWritable, err)
+	}
 	return nil
 }
 
