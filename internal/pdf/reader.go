@@ -195,7 +195,6 @@ func IsPDFFile(filePath string) error {
 func GetPDFConfig() *pdfmodel.Configuration {
 	once.Do(func() {
 		config = pdfmodel.NewDefaultConfiguration()
-		config.SetUnit("in")
 	})
 	return config
 }
@@ -220,7 +219,7 @@ func GetPDFInfo(reader io.ReadSeeker, filePath string) (info *pdfcpu.PDFInfo, er
 	if err != nil {
 		if strings.Contains(err.Error(), "correct password") {
 			err = utils.NewErr("encrypted PDFs are not supported", ErrInvalidPDF)
-		} else if err != nil {
+		} else {
 			err = utils.WrapErr("could not get PDF info", ErrInvalidPDF, err)
 		}
 		return
@@ -237,4 +236,21 @@ func GetPDFInfo(reader io.ReadSeeker, filePath string) (info *pdfcpu.PDFInfo, er
 	}
 
 	return
+}
+
+func ExtractPageBox(pageBoundary pdfmodel.PageBoundaries) (*PageBox, error) {
+	mediaBox := pageBoundary.MediaBox()
+	if mediaBox == nil {
+		return nil, utils.NewErr("media box not found", ErrInvalidPDF)
+	}
+
+	width := mediaBox.Width()
+	height := mediaBox.Height()
+
+	return &PageBox{
+		Width:       width,
+		Height:      height,
+		Size:        DetectKnownSize(width, height),
+		Orientation: DetectOrientation(width, height),
+	}, nil
 }
