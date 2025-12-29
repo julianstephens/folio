@@ -45,7 +45,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: folio-binaries
+          name: folio-binaries-${{ matrix.goos }}-${{ matrix.goarch }}
           path: dist/*
 
   release:
@@ -57,7 +57,8 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: folio-binaries
+          pattern: folio-binaries-*
+          merge-multiple: true
           path: dist
 
       - name: Create GitHub Release
