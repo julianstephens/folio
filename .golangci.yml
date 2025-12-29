@@ -11,7 +11,7 @@ linters:
     - govet # built-in: suspicious constructs
     - staticcheck # high-signal static analysis
     - ineffassign # detect unused assignments
-    
+
 
 formatters:
   enable:

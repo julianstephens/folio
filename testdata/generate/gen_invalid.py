@@ -15,7 +15,8 @@ def ensure_out_dir():
 
 def make_empty_file():
     path = os.path.join(OUT_DIR, "empty.pdf")
-    open(path, "wb").close()
+    with open(path, "wb"):
+        pass
     print(f"wrote empty file {path}")
 
 
@@ -38,7 +39,14 @@ def make_truncated_pdf():
         print("missing 4p_letter.pdf; run gen_valid.py first")
         return
 
-    data = open(src, "rb").read()
+    data = None
+    with open(src, "rb") as f:
+        data = f.read()
+
+    if data is None:
+        print("failed to read 4p_letter.pdf")
+        return
+
     half = len(data) // 2
     with open(dst, "wb") as f:
         f.write(data[:half])
