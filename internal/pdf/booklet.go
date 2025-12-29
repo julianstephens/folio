@@ -47,6 +47,10 @@ func CreateBooklet(inputPath, outputPath string, opts BookletOptions) error {
 	}
 
 	// Validate uniform page sizes
+	if len(info.PageBoundaries) == 0 {
+		return utils.NewErr("PDF contains no pages", ErrInvalidPDF)
+	}
+
 	firstBox, err := ExtractPageBox(info.PageBoundaries[0])
 	if err != nil {
 		return err
@@ -205,7 +209,15 @@ func getSheetDimensions(size string) (width, height float64) {
 // createBookletConfig creates a pdfcpu NUp configuration for booklet.
 func createBookletConfig(sheetSize, bindingEdge string, conf *pdfmodel.Configuration) (*pdfmodel.NUp, error) {
 	// Map sheet size to pdfcpu format
-	pdfcpuSize := strings.Title(sheetSize) // "Letter" or "A4"
+	var pdfcpuSize string
+	switch sheetSize {
+	case "letter":
+		pdfcpuSize = "Letter"
+	case "a4":
+		pdfcpuSize = "A4"
+	default:
+		return nil, utils.NewErr(fmt.Sprintf("unsupported sheet size: %s", sheetSize), ErrCannotInferSize)
+	}
 	desc := fmt.Sprintf("formsize:%s", pdfcpuSize)
 
 	// Create base booklet configuration
