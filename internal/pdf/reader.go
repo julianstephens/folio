@@ -126,11 +126,15 @@ func validatePDFContent(filePath *string, reader *io.ReadSeeker) error {
 		if err != nil {
 			return utils.WrapErr(fmt.Sprintf("could not open file %q", fp), ErrInvalidPDF, err)
 		}
-		defer file.Close()
 
 		_, err = file.ReadAt(trailer, fileSize-bufSize)
 		if err != nil {
+			_ = file.Close()
 			return utils.WrapErr(fmt.Sprintf("could not read end of file %q", fp), ErrInvalidPDF, err)
+		}
+
+		if err := file.Close(); err != nil {
+			return utils.WrapErr(fmt.Sprintf("could not close file %q", fp), ErrInvalidPDF, err)
 		}
 	} else {
 		seeker, ok := (*reader).(io.Seeker)
