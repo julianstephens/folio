@@ -41,10 +41,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Install qpdf
-        run: |
-          sudo apt update && sudo apt upgrade -y && sudo apt install -y qpdf
-
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -63,7 +59,6 @@ jobs:
           python ./testdata/generate/gen_valid.py
           python ./testdata/generate/gen_invalid.py
           python ./testdata/generate/gen_special.py
-          qpdf --encrypt user owner 128 -- ./testdata/pdf/4p_letter.pdf ./testdata/pdf/encrypted.pdf
 
       - name: Go test
         run: go test ./...
