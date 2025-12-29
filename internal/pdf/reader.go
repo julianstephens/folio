@@ -214,7 +214,9 @@ func GetPDFInfo(reader io.ReadSeeker, filePath string) (info *pdfcpu.PDFInfo, er
 		if strings.Contains(err.Error(), "correct password") {
 			err = utils.NewErr("encrypted PDFs are not supported", ErrInvalidPDF)
 		}
-		err = utils.WrapErr("could not get PDF info", ErrInvalidPDF, err)
+		if err != nil {
+			err = utils.WrapErr("could not get PDF info", ErrInvalidPDF, err)
+		}
 		return
 	}
 
