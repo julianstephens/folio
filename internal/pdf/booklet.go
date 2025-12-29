@@ -93,7 +93,11 @@ func CreateBooklet(inputPath, outputPath string, opts BookletOptions) error {
 	return nil
 }
 
-// validateOutputPath checks if the output path is writable.
+// validateOutputPath verifies that the directory for outputPath exists, is a directory,
+// and is writable by attempting to create and remove a temporary file within it.
+// It returns an error wrapping ErrOutputNotWritable via utils.NewErr or
+// utils.WrapErr if the directory does not exist, cannot be accessed, is not
+// a directory, or is not writable. It returns nil if all checks pass.
 func validateOutputPath(outputPath string) error {
 	dir := filepath.Dir(outputPath)
 
