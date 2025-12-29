@@ -6,7 +6,7 @@ func WrapErr(format string, wrappedErr, err error) error {
 	if err == nil {
 		return nil
 	}
-	return fmt.Errorf("%w: "+format+": %v", wrappedErr, err)
+	return fmt.Errorf("%w: "+format+": %w", wrappedErr, err)
 }
 
 func NewErr(format string, wrappedErr error, args ...interface{}) error {
