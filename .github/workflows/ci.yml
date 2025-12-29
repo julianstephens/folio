@@ -7,13 +7,13 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  vet:
     name: Go test and vet
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Go
         uses: actions/setup-go@v5
@@ -32,6 +32,38 @@ jobs:
 
       - name: Go vet
         run: go vet ./...
+  test:
+    name: Go test with generated PDFs
+    runs-on: ubuntu-latest
+    needs: vet
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install qpdf
+        run: |
+          sudo apt update && sudo apt upgrade -y && sudo apt install -y qpdf
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Create Python virtual environment
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install reportlab
+
+      - name: Generate test PDFs
+        run: |
+          source venv/bin/activate
+          python ./testdata/generate/gen_valid.py
+          python ./testdata/generate/gen_invalid.py
+          python ./testdata/generate/gen_special.py
+          qpdf --encrypt user owner 128 -- ./testdata/pdf/4p_letter.pdf ./testdata/pdf/encrypted.pdf
 
       - name: Go test
         run: go test ./...
@@ -43,7 +75,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v9
