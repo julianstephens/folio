@@ -111,7 +111,7 @@ func validatePDFContent(filePath *string, reader *io.ReadSeeker) error {
 		}
 	}
 
-	if !strings.HasPrefix(string(header), "%PDF-1.") {
+	if !strings.HasPrefix(string(header), "%PDF-") {
 		return utils.NewErr(fmt.Sprintf("file %q does not appear to be a valid PDF", fp), ErrInvalidPDF)
 	}
 
