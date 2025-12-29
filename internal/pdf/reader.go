@@ -88,7 +88,7 @@ func validatePDFContent(filePath *string, reader *io.ReadSeeker) error {
 		return utils.NewErr(fmt.Sprintf("file %q is empty", fp), ErrInvalidPDF)
 	}
 
-	var header []byte = make([]byte, 8)
+	var header = make([]byte, 8)
 	if filePath != nil {
 		file, err := os.Open(fp)
 		if err != nil {
@@ -120,7 +120,7 @@ func validatePDFContent(filePath *string, reader *io.ReadSeeker) error {
 		bufSize = fileSize
 	}
 
-	var trailer []byte = make([]byte, bufSize)
+	var trailer = make([]byte, bufSize)
 	if filePath != nil {
 		file, err := os.Open(fp)
 		if err != nil {
