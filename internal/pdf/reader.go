@@ -166,7 +166,7 @@ func validatePDFContent(filePath *string, reader *io.ReadSeeker) error {
 	return nil
 }
 
-/* IsPDFFile checks if the file at filePath is a valid, non-empty PDF file. */
+// IsPDFFile checks if the file at filePath is a valid, non-empty PDF file.
 func IsPDFFile(filePath string) error {
 	if strings.ToLower(filepath.Ext(filePath)) != ".pdf" {
 		return utils.NewErr(fmt.Sprintf("file %q is not a PDF", filePath), ErrInvalidPDF)
@@ -188,7 +188,7 @@ func IsPDFFile(filePath string) error {
 	return nil
 }
 
-/* GetPDFConfig returns a singleton PDF configuration instance. */
+// GetPDFConfig returns a singleton PDF configuration instance.
 func GetPDFConfig() *pdfmodel.Configuration {
 	once.Do(func() {
 		config = pdfmodel.NewDefaultConfiguration()
@@ -197,7 +197,7 @@ func GetPDFConfig() *pdfmodel.Configuration {
 	return config
 }
 
-/* GetPDFReader reads the PDF file located at filePath and returns an io.ReadSeeker for it. */
+// GetPDFReader reads the PDF file located at filePath and returns an io.ReadSeeker for it.
 func GetPDFReader(filePath string) (reader io.ReadSeeker, err error) {
 	fileContent, err := os.ReadFile(filePath)
 	if err != nil {
@@ -211,7 +211,7 @@ func GetPDFReader(filePath string) (reader io.ReadSeeker, err error) {
 	return
 }
 
-/* GetPDFInfo retrieves information about the PDF file located at filePath. */
+// GetPDFInfo retrieves information about the PDF file located at filePath.
 func GetPDFInfo(reader io.ReadSeeker, filePath string) (info *pdfcpu.PDFInfo, err error) {
 	info, err = pdfapi.PDFInfo(reader, filePath, nil, true, GetPDFConfig())
 	if err != nil {

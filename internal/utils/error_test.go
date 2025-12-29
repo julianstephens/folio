@@ -2,7 +2,6 @@ package utils
 
 import (
 	"errors"
-	"fmt"
 	"testing"
 )
 
@@ -20,7 +19,7 @@ func TestWrapErr(t *testing.T) {
 		t.Error("WrapErr should preserve original error")
 	}
 
-	fmt.Println("WrapErr result:", err)
+	t.Logf("WrapErr result: %v", err)
 }
 
 func TestMultipleLevels(t *testing.T) {
@@ -36,7 +35,7 @@ func TestMultipleLevels(t *testing.T) {
 		t.Error("original error should be preserved through multiple wraps")
 	}
 
-	fmt.Println("Multiple wraps result:", err2)
+	t.Logf("Multiple wraps result: %v", err2)
 }
 
 func TestNewErr(t *testing.T) {
@@ -51,5 +50,5 @@ func TestNewErr(t *testing.T) {
 		t.Errorf("NewErr message mismatch. got: %q, want: %q", err.Error(), expectedMsg)
 	}
 
-	fmt.Println("NewErr result:", err)
+	t.Logf("NewErr result: %v", err)
 }

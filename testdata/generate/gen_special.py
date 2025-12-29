@@ -18,8 +18,6 @@ def ensure_out_dir():
 
 
 def blank_one_page_pdf():
-    from reportlab.lib.pagesizes import letter
-
     path = os.path.join(OUT_DIR, "blank_one_page.pdf")
     c = canvas.Canvas(path, pagesize=letter)
     c.showPage()
