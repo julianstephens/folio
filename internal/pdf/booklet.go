@@ -33,8 +33,8 @@ type BookletOptions struct {
 //   - If opts.Pad == "none" and the input page count is not a multiple of 4,
 //     CreateBooklet returns ErrInvalidPageCount without modifying the file.
 //   - For any other value (including "auto"), the underlying pdfcpu library
-//     automatically pads the document as needed (for example, by inserting
-//     blank pages) so that the page count is suitable for booklet imposition.
+//     automatically pads the document as needed, for example by inserting
+//     blank pages, so that the page count is suitable for booklet imposition.
 func CreateBooklet(inputPath, outputPath string, opts BookletOptions) error {
 	// Validate output path is writable
 	if err := validateOutputPath(outputPath); err != nil {
