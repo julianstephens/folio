@@ -1,21 +1,12 @@
 package pdf
 
 import (
-	"errors"
 	"fmt"
 
 	pdfapi "github.com/pdfcpu/pdfcpu/pkg/api"
 	pdfmodel "github.com/pdfcpu/pdfcpu/pkg/pdfcpu/model"
 
 	"github.com/julianstephens/folio/internal/utils"
-)
-
-var (
-	ErrMixedPageSizes    = errors.New("mixed page sizes")
-	ErrCannotInferSize   = errors.New("cannot infer sheet size")
-	ErrBookletConfig     = errors.New("invalid booklet configuration")
-	ErrInvalidPageCount  = errors.New("invalid page count")
-	ErrOutputNotWritable = errors.New("output path not writable")
 )
 
 // BookletOptions contains configuration for booklet creation.

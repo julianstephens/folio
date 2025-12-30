@@ -19,12 +19,12 @@ func (c *Nup) AfterApply() error {
 	if err := pdf.IsPDFFile(c.InputFileArg.File); err != nil {
 		return err
 	}
-	
+
 	// Validate orientation if provided
 	if c.Orientation != "" && c.Orientation != "portrait" && c.Orientation != "landscape" {
 		return fmt.Errorf("orientation must be 'portrait', 'landscape', or empty (for auto-detection), got: %q", c.Orientation)
 	}
-	
+
 	return nil
 }
 

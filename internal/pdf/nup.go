@@ -1,7 +1,6 @@
 package pdf
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 
@@ -9,10 +8,6 @@ import (
 	pdfmodel "github.com/pdfcpu/pdfcpu/pkg/pdfcpu/model"
 
 	"github.com/julianstephens/folio/internal/utils"
-)
-
-var (
-	ErrNupConfig = errors.New("invalid nup configuration")
 )
 
 // NupOptions contains configuration for n-up layout.
