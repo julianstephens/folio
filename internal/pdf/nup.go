@@ -81,8 +81,8 @@ func CreateNup(inputPath, outputPath string, opts NupOptions) error {
 
 	orientation := opts.Orientation
 	if orientation == "" {
-		// Auto-detect orientation based on sheet size and n-up layout
-		orientation = determineNupOrientation(sheetSize, opts.PerSheet)
+		// Auto-detect orientation based on n-up layout
+		orientation = determineNupOrientation(opts.PerSheet)
 	}
 
 	conf := GetPDFConfig()
@@ -102,7 +102,7 @@ func CreateNup(inputPath, outputPath string, opts NupOptions) error {
 // determineNupOrientation infers the best orientation for n-up layout.
 // For 2-up: typically landscape (side-by-side)
 // For 4-up: typically portrait (2x2 grid)
-func determineNupOrientation(sheetSize string, perSheet int) string {
+func determineNupOrientation(perSheet int) string {
 	// For 2-up, landscape is standard (pages side-by-side)
 	if perSheet == 2 {
 		return "landscape"
@@ -127,10 +127,14 @@ func createNupConfig(sheetSize, orientation string, perSheet int, conf *pdfmodel
 	// L = Landscape, P = Portrait
 	orientLower := strings.ToLower(orientation)
 	switch orientLower {
+	case "":
+		// auto: no explicit orientation suffix
 	case "landscape":
 		pdfcpuSize += "L"
 	case "portrait":
 		pdfcpuSize += "P"
+	default:
+		return nil, utils.NewErr(fmt.Sprintf("unsupported orientation: %s", orientation), ErrNupConfig)
 	}
 
 	// Build description string for pdfcpu

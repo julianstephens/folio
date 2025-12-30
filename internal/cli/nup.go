@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/julianstephens/folio/internal/pdf"
 )
@@ -20,9 +21,12 @@ func (c *Nup) AfterApply() error {
 		return err
 	}
 
-	// Validate orientation if provided
-	if c.Orientation != "" && c.Orientation != "portrait" && c.Orientation != "landscape" {
-		return fmt.Errorf("orientation must be 'portrait', 'landscape', or empty (for auto-detection), got: %q", c.Orientation)
+	// Validate orientation if provided (case-insensitive)
+	if c.Orientation != "" {
+		orientLower := strings.ToLower(c.Orientation)
+		if orientLower != "portrait" && orientLower != "landscape" {
+			return fmt.Errorf("orientation must be 'portrait', 'landscape', or empty (for auto-detection), got: %q", c.Orientation)
+		}
 	}
 
 	return nil
