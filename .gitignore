@@ -40,3 +40,10 @@ venv
 
 testdata/pdf
 !testdata/pdf/encrypted.pdf
+
+# Example output files
+examples/*-output.pdf
+examples/*-2up.pdf
+examples/*-4up.pdf
+examples/*-a4.pdf
+examples/*-portrait.pdf
