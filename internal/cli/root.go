@@ -19,7 +19,7 @@ type SheetSizeFlag struct {
 }
 
 type PadFlag struct {
-	Pad string `flag:"" name:"pad" help:"Page padding mode (auto, none). Auto pads to multiple of 4." enum:"auto,none" default:"auto"`
+	Pad string `flag:"" name:"pad" help:"Page padding mode (auto, none). Auto pads to required page count." enum:"auto,none" default:"auto"`
 }
 
 type PerSheetFlag struct {
