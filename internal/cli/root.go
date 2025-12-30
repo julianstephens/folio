@@ -10,8 +10,16 @@ type InputFileArg struct {
 	File string `arg:"" name:"file" help:"Input PDF file." type:"existingfile"`
 }
 
-type OutputFileArg struct {
-	File string `arg:"" name:"output" help:"Output PDF file." type:"path"`
+type OutputFileFlag struct {
+	File string `flag:"" name:"output" short:"o" help:"Output PDF file." type:"path"`
+}
+
+type SheetSizeFlag struct {
+	SheetSize string `flag:"" name:"sheet-size" help:"Sheet size (e.g., letter, a4)." optional:""`
+}
+
+type PadFlag struct {
+	Pad string `flag:"" name:"pad" help:"Page padding mode (auto, none). Auto pads to multiple of 4." enum:"auto,none" default:"auto"`
 }
 
 type CLI struct {

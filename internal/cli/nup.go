@@ -6,7 +6,7 @@ import (
 
 type Nup struct {
 	InputFileArg
-	OutputFileArg
+	OutputFileFlag
 }
 
 func (c *Nup) AfterApply() error {

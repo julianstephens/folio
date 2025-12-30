@@ -6,7 +6,10 @@ import (
 
 type Booklet struct {
 	InputFileArg
-	OutputFileArg
+	OutputFileFlag
+	SheetSizeFlag
+	PadFlag
+	BindingEdge string `help:"Binding edge orientation (long, short)." enum:"long,short" default:"long"`
 }
 
 func (c *Booklet) AfterApply() error {
@@ -14,5 +17,11 @@ func (c *Booklet) AfterApply() error {
 }
 
 func (c *Booklet) Run() error {
-	return nil
+	return pdf.CreateBooklet(c.InputFileArg.File, c.OutputFileFlag.File, pdf.BookletOptions{
+		WriteOptions: pdf.WriteOptions{
+			SheetSize: c.SheetSize,
+			Pad:       c.Pad,
+		},
+		BindingEdge: c.BindingEdge,
+	})
 }
