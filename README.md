@@ -25,7 +25,7 @@ Ideal for personal printing projects, zine creation, or preparing conference han
 ### From Source
 
 **Prerequisites:**
-- Go 1.21 or later
+- Go 1.25 or later
 
 **Steps:**
 
