@@ -22,6 +22,14 @@ type PadFlag struct {
 	Pad string `flag:"" name:"pad" help:"Page padding mode (auto, none). Auto pads to multiple of 4." enum:"auto,none" default:"auto"`
 }
 
+type PerSheetFlag struct {
+	PerSheet int `flag:"" name:"per-sheet" help:"Number of pages per sheet (2 or 4)." enum:"2,4" default:"2"`
+}
+
+type OrientationFlag struct {
+	Orientation string `flag:"" name:"orientation" help:"Output orientation (portrait, landscape, or empty for auto-detection)." default:""`
+}
+
 type CLI struct {
 	Globals
 	Info    Info    `cmd:"" help:"Show information about a PDF file."`
