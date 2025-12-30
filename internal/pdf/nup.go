@@ -126,9 +126,10 @@ func createNupConfig(sheetSize, orientation string, perSheet int, conf *pdfmodel
 	// Add orientation suffix if specified
 	// L = Landscape, P = Portrait
 	orientLower := strings.ToLower(orientation)
-	if orientLower == "landscape" {
+	switch orientLower {
+	case "landscape":
 		pdfcpuSize += "L"
-	} else if orientLower == "portrait" {
+	case "portrait":
 		pdfcpuSize += "P"
 	}
 
